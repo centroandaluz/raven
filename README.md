@@ -1,22 +1,22 @@
 # Raven
-Raven is a Linkedin information gathering tool that  can be used by pentesters to gather information about an organization employees using Linkedin.
+Raven es una herramienta de recopilación de información de Linkedin que pueden utilizar los pentesters para recopilar información sobre los empleados de una organización que utilizan Linkedin.
 
 ## Disclaimer
 
 ```
-Please do not use this program to do stupid things. 
+Por favor, no use este programa para hacer cosas estúpidas.
 
-The author does not keep any responsibility of any damage done by this program.
+El autor no se hace responsable de los daños causados por este programa.
 
-USE IT AT YOUR OWN RISK.
+ÚSELO BAJO SU PROPIO RIESGO.
 ```
-## Installation
+## Instalación
 
-You can use the precompiled binary, but also you can compile from source.
+Puede usar el binario precompilado, pero también puede compilar desde la fuente.
 
-You need to install chromedriver even if you use a precompiled binary or compiling from source.
+Debe instalar chromedriver incluso si utiliza un binario precompilado o compilando desde la fuente.
 
-Edit the credentials in the ```config.conf```
+Edite las credenciales en ```config.conf```
 ```
 [creds]
 username=USERNAME
@@ -24,7 +24,7 @@ password=PASSWORD
 [extra]
 searchengine=google
 ```
-## Compiling on Linux
+## Compilando en Linux
 ```bash
 export GOPATH=/YOUR/GOPATH/HERE
 cd $GOPATH/src/
@@ -38,7 +38,7 @@ go get github.com/sclevine/agouti
 go build raven
 
 ```
-## Installing chromedriver
+## Instalación de chromedriver
 
 ```bash
 wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
@@ -47,11 +47,11 @@ sudo mv -f chromedriver /usr/bin/chromedriver
 sudo chown root:root /usr/bin/chromedriver
 sudo chmod 0755 /usr/bin/chromedriver
 ```
-## Releases
+## Lanzamientos
 
 [https://github.com/0x09AL/raven/releases](https://github.com/0x09AL/raven/releases)
 
-# Dependencies
+# Dependencias
 * [https://github.com/chzyer/readline](https://github.com/chzyer/readline)	
 * [https://github.com/gorilla/mux](https://github.com/gorilla/mux)
 * [https://github.com/mattn/go-sqlite3](https://github.com/mattn/go-sqlite3)
@@ -59,60 +59,60 @@ sudo chmod 0755 /usr/bin/chromedriver
 * [http://gopkg.in/gcfg.v1](http://gopkg.in/gcfg.v1)
 * [https://github.com/sclevine/agouti](https://github.com/sclevine/agouti)
 
-## How it works
+## Cómo funciona
 
-The main idea is that given a company name, searches all possible matches of Linkedin Employees in Google and then extracts their data. Based on that, it can build e-mail addresses in different formats, export them and also check them in haveibeenpwned.com.
+La idea principal es que, dado el nombre de una empresa, busca todas las coincidencias posibles de los empleados de Linkedin en Google y luego extrae sus datos. Basado en eso, puede construir direcciones de correo electrónico en diferentes formatos, exportarlas y también verificarlas en haveibeenpwned.com.
 
-The previous version of raven allowed you to extract data only after finishing a scan and only in a specified format. In case you wanted to extract the same info but with a different e-mail format , you needed to re-run the scan which wasn't very practical.
+La versión anterior de raven le permitía extraer datos solo después de terminar un escaneo y solo en un formato específico. En caso de que quisiera extraer la misma información pero con un formato de correo electrónico diferente, tenía que volver a ejecutar el escaneo, lo que no era muy práctico.
 
-In this version it is possible that given a scan, you can export the data as many times as you want, in different formats and also check them in haveibeenpwned.com with only one command.
+En esta versión, es posible que, dado un escaneo, pueda exportar los datos tantas veces como lo desee, en diferentes formatos y también verificarlos en haveibeenpwned.com con un solo comando.
 
-# Scan
+# Escanear
 
-A ```Scan``` is the process of extracting the public information from Google and Linkedin and storing it in the database.
+Un ``scan``  es el proceso de extraer la información pública de Google y Linkedin y almacenarla en la base de datos.
 
-To create a scan you can run the command ``` new scan ``` this will bring you to the scan instance. There are some properties that should be configured before running a scan as can be seen below.
-
-<center>
-<img src="/images/raven-new-scan.png">
-</center>
-
-* ```Scan_id``` - Can't be changed, is the scan id which is used as a PK in the database.
-* ```Scan_name``` - The name of the scan, used later when you want to export data.
-* ```Company``` - The name of the company that you want to extract employees.
-* ```Domain``` - This is the subdomain of the main LinkedIn website. If you want to target a specific country you can specify the subdomain. For example , Albania has the subdomain ```al```. In case you don't know the subdomain use ```www```.
-* ```Pages_number``` - The number of Google pages to extract information from.
-
-Running the command ```options``` you can see the properties and values that are assigned.
-
-Below is an example scan:
+Para crear un escaneo puede ejecutar el comando ``new scan`` que lo llevará a la instancia de escaneo. Hay algunas propiedades que deben configurarse antes de ejecutar un análisis, como se puede ver a continuación.
 
 <center>
 <img src="/images/raven-new-scan.png">
 </center>
 
-After setting the properties you can use ```start``` to start the scan.
-The scan will insert the data in the database so that you can use it later.
+* ```Scan_id``` - No se puede cambiar, es la identificación de escaneo que se utiliza como PK en la base de datos.
+* ```Scan_name``` - el nombre del escaneo, que se utiliza más tarde cuando desea exportar datos.
+* ```Company``` - el nombre de la compañía que desea extraer empleados.
+* ```Domain``` -  Este es el subdominio del sitio web principal de LinkedIn. Si desea orientar a un país específico, puede especificar el subdominio. Por ejemplo, Albania tiene el subdominio ```al```. n caso de que no conozca el subdominio, use ```www```.
+* ```Pages_number``` - el número de páginas de Google para extraer información.
 
-# Export
+Al ejecutar el comando ```options``` puede ver las propiedades y los valores asignados.
 
-After finishing the scan, you can use the data by running ```use (scan_name)```.
-To use this command you need to be on the ```main``` instance. For example if you finished a scan, you need to type ```back``` to return to the main instance.
-This will bring you to export instance. The export instance allows you to export the data in different formats and check them in haveibeenpwned.com .
+A continuación se muestra un ejemplo de escaneo:
 
-The export instance has 3 properties.
+<center>
+<img src="/images/raven-new-scan.png">
+</center>
 
-* ```Format``` - The format of the e-mails.
-* ```Domain``` - The domain to append to the "usernames".
-* ```Output``` - Filename to write the output.
+Después de configurar las propiedades, puede usar ```start``` para iniciar el escaneo.
+El escaneo insertará los datos en la base de datos para que pueda usarlos más tarde.
 
-Below are the avaible formats. You can use also the ```ALL``` in case you want to generate all the avaiable formats, and then use a custom tool to verify the e-mail addresses.
+# Exportar
+
+Después de finalizar el escaneo, puede usar los datos ejecutando ```use (scan_name)```.
+Para utilizar este comando, debe estar en la instancia ```main```. Por ejemplo, si terminó un escaneo, debe escribir ```back``` para volver a la instancia principal.
+Esto lo llevará a exportar instancia. La instancia de exportación le permite exportar los datos en diferentes formatos y verificarlos en haveibeenpwned.com.
+
+La instancia de exportación tiene 3 propiedades.
+
+* ```Format``` - El formato de los correos electrónicos.
+* ```Domain``` - El dominio anexar a los" nombres de usuario ".
+* ```Output``` - Nombre de archivo para escribir el resultado.
+
+A continuación se muestran los formatos disponibles. También puede usar ```ALL``` en caso de que desee generar todos los formatos disponibles, y luego usar una herramienta personalizada para verificar las direcciones de correo electrónico.
 
 <center>
 <img src="/images/raven-formats.png">
 </center>
 
-After specifying a format and a domain, you can export them using the ```export``` command or check if they have been breached by using the ```checkpwned``` command as can be seen below.
+Después de especificar un formato y un dominio, puede exportarlos usando el comando ```export``` o verificar si se han violado usando el comando ```checkpwned``` como se puede ver a continuación.
 <center>
 <img src="/images/raven-checkpwned.png">
 </center>
